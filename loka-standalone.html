@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loka Labs — Economic World Model</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #ceccc9;
+            --text-dark: #111111;
+            --text-light: #ffffff;
+            --text-muted: #8c8b89;
+
+            --font-sans: 'DM Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-serif: 'Instrument Serif', serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 8rem;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.4;
+        }
+
+        #glcanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            padding: var(--space-sm);
+        }
+
+        header {
+            position: fixed;
+            top: var(--space-sm);
+            left: var(--space-sm);
+            right: var(--space-sm);
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            mix-blend-mode: difference;
+            z-index: 50;
+        }
+
+        .meta-group { display: flex; gap: var(--space-md); }
+
+        h1, h2, h3, .display-sans {
+            font-family: var(--font-sans);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 0.85;
+            letter-spacing: -0.02em;
+        }
+
+        .display-serif {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            line-height: 1;
+            text-transform: none;
+            font-style: italic;
+            color: var(--text-light);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 18vh 5vw 12vh;
+        }
+        .hero-title-group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .hero-sans {
+            font-size: clamp(3.5rem, 9vw, 9.5rem);
+            color: var(--text-light);
+            position: relative;
+            z-index: 2;
+        }
+        .hero-script {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            position: relative;
+            z-index: 3;
+            letter-spacing: -0.03em;
+            align-self: flex-start;
+            margin-left: clamp(2rem, 8vw, 8rem);
+        }
+        .hero-tagline {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--text-light);
+            max-width: 32rem;
+            line-height: 1.7;
+            margin-top: 3rem;
+            mix-blend-mode: difference;
+        }
+        .manifesto-block {
+            position: absolute;
+            bottom: 8vh;
+            right: 5vw;
+            width: 300px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            text-align: justify;
+            color: var(--text-light);
+            font-family: var(--font-sans);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            z-index: 10;
+            mix-blend-mode: difference;
+        }
+
+        /* QUOTE */
+        .quote-section {
+            padding: var(--space-xl) 5vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            position: relative;
+        }
+        .quote-inner { max-width: 56rem; text-align: center; }
+        .quote-text {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            line-height: 1.3;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            mix-blend-mode: difference;
+        }
+        .quote-text strong { font-weight: 500; font-style: italic; }
+        .quote-cite {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--text-light);
+            opacity: 0.75;
+            mix-blend-mode: difference;
+        }
+
+        /* PROSE (Gap / Catalyst / Verification) */
+        .prose-section {
+            padding: var(--space-xl) 5vw;
+            position: relative;
+            display: flex;
+        }
+        .prose-section.right { justify-content: flex-end; }
+        .prose-block {
+            max-width: 42rem;
+            color: var(--text-light);
+            mix-blend-mode: difference;
+        }
+        .prose-section.right .prose-block { text-align: right; }
+        .prose-kicker {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            margin-bottom: 2rem;
+            opacity: 0.75;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .prose-section.right .prose-kicker { justify-content: flex-end; }
+        .prose-kicker .rule { width: 1.5rem; height: 1px; background: currentColor; }
+        .prose-heading {
+            font-family: var(--font-sans);
+            font-weight: 400;
+            text-transform: none;
+            font-size: clamp(2rem, 4.5vw, 3.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+        }
+        .prose-body {
+            font-size: 1rem;
+            font-weight: 300;
+            line-height: 1.6;
+            opacity: 0.9;
+            max-width: 32rem;
+        }
+        .prose-section.right .prose-body { margin-left: auto; }
+        .prose-body p + p { margin-top: 1rem; }
+        .prose-stats {
+            margin-top: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            border-left: 1px solid currentColor;
+            padding-left: 1.5rem;
+            max-width: 28rem;
+        }
+        .prose-section.right .prose-stats { margin-left: auto; text-align: left; }
+        .stat-title {
+            font-family: var(--font-sans);
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+        .stat-desc {
+            font-size: 0.85rem;
+            font-weight: 300;
+            opacity: 0.85;
+            line-height: 1.55;
+        }
+
+        /* LADDER */
+        .ladder-section {
+            padding: var(--space-xl) 5vw;
+            position: relative;
+            background: linear-gradient(135deg, #d4d2cf 0%, #c8c6c3 50%, #b8b6b3 100%);
+            overflow: hidden;
+        }
+        .ladder-section::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(0,0,0,0.05) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(255,255,255,0.3) 0%, transparent 35%);
+            animation: gradientShift 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes gradientShift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, 2%) rotate(1deg); }
+            66% { transform: translate(-1%, 3%) rotate(-1deg); }
+        }
+        .ladder-intro {
+            font-family: var(--font-sans);
+            font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+            max-width: 720px;
+            margin-bottom: var(--space-xl);
+            font-weight: 500;
+            text-transform: uppercase;
+            line-height: 1.25;
+            position: relative;
+            z-index: 2;
+        }
+        .ladder-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 7rem;
+            position: relative;
+            z-index: 2;
+        }
+        .ladder-item {
+            position: relative;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+        .ladder-item.right {
+            grid-template-columns: 1fr auto;
+            text-align: right;
+        }
+        .ladder-num {
+            font-family: var(--font-sans);
+            font-size: clamp(3.5rem, 6vw, 6rem);
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+        }
+        .ladder-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 36rem;
+        }
+        .ladder-item.right .ladder-body { margin-left: auto; align-items: flex-end; }
+        .ladder-script {
+            font-size: clamp(2.25rem, 4.5vw, 4rem);
+            letter-spacing: -0.02em;
+            color: var(--text-dark);
+        }
+        .ladder-content {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(6px);
+            padding: 1.25rem 1.5rem;
+            max-width: 28rem;
+            border: 1px solid rgba(255,255,255,0.18);
+        }
+        .ladder-title {
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.5rem;
+        }
+        .ladder-desc {
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* INFRASTRUCTURE */
+        .infrastructure-section {
+            padding: var(--space-xl) 5vw;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--space-md);
+            position: relative;
+            background: #e8e6e3;
+            overflow: hidden;
+        }
+        .infrastructure-section::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background-image:
+                radial-gradient(circle, rgba(0,0,0,0.04) 1.5px, transparent 1.5px),
+                radial-gradient(circle, rgba(0,0,0,0.02) 1px, transparent 1px),
+                radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 60px 60px, 40px 40px, 80px 80px;
+            background-position: 0 0, 20px 20px, 40px 40px;
+            animation: dotFloat 25s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes dotFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(60px, 60px) rotate(360deg); }
+        }
+        .infrastructure-section::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.2), transparent);
+        }
+        .infra-header {
+            grid-column: 1 / -1;
+            margin-bottom: var(--space-lg);
+            position: relative;
+            z-index: 2;
+        }
+        .infra-kicker {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            opacity: 0.65;
+            margin-bottom: 1.25rem;
+        }
+        .infra-heading {
+            font-family: var(--font-sans);
+            font-size: clamp(2rem, 4.5vw, 3.5rem);
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            color: var(--text-dark);
+            max-width: 48rem;
+            margin-bottom: 1.5rem;
+        }
+        .infra-header .display-serif {
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            color: var(--text-dark);
+            opacity: 0.85;
+        }
+        .feature-block {
+            grid-column: span 4;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+        }
+        @media (max-width: 1024px) {
+            .feature-block { grid-column: span 6; }
+        }
+        @media (max-width: 768px) {
+            .feature-block { grid-column: 1 / -1; margin-bottom: var(--space-lg); }
+            .ladder-item, .ladder-item.right { grid-template-columns: 1fr; text-align: left; }
+            .ladder-item.right .ladder-body { align-items: flex-start; margin-left: 0; }
+            .manifesto-block { position: relative; right: 0; bottom: 0; margin-top: 3rem; width: 100%; }
+        }
+        .feature-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            opacity: 0.6;
+            margin-bottom: 0.5rem;
+        }
+        .feature-title {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--text-dark);
+            padding-bottom: var(--space-xs);
+            margin-bottom: var(--space-sm);
+            letter-spacing: 0.02em;
+        }
+        .feature-text {
+            font-size: 0.8rem;
+            text-align: justify;
+            opacity: 0.85;
+            line-height: 1.6;
+        }
+        .feature-quote {
+            grid-column: 1 / -1;
+            margin-top: 4rem;
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+            opacity: 0.8;
+            position: relative;
+            z-index: 2;
+        }
+
+        .verification-section {
+            padding: var(--space-xl) 5vw;
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: var(--space-xl) 5vw;
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .cta-badge {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 4rem;
+            color: var(--text-light);
+            mix-blend-mode: difference;
+        }
+        .cta-badge .pill {
+            border: 1px solid currentColor;
+            padding: 0.35rem 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+        .cta-badge .credit {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            text-align: center;
+        }
+        .cta-heading {
+            font-family: var(--font-sans);
+            font-weight: 400;
+            text-transform: none;
+            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            color: var(--text-light);
+            mix-blend-mode: difference;
+            max-width: 56rem;
+            margin-bottom: 1.5rem;
+        }
+        .cta-sub {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            mix-blend-mode: difference;
+            opacity: 0.8;
+            margin-bottom: 3rem;
+        }
+        .cta-button {
+            background: transparent;
+            border: 1px solid var(--text-light);
+            color: var(--text-light);
+            padding: 1.1rem 2.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            cursor: pointer;
+            mix-blend-mode: difference;
+            transition: background 0.4s, color 0.4s;
+        }
+        .cta-button:hover { background: var(--text-light); color: var(--text-dark); }
+
+        footer {
+            padding: var(--space-lg) 5vw;
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+        }
+        .serif-accent {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            text-transform: none;
+            font-style: italic;
+            line-height: 0;
+            vertical-align: middle;
+            margin: 0 8px;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="glcanvas"></canvas>
+
+    <header>
+        <div class="meta-group">
+            <span>LOKA LABS</span>
+            <span>EWM // SYSTEM</span>
+            <span>v.1.0.4</span>
+        </div>
+        <div class="meta-group">
+            <span>FOR INSTITUTIONAL USE</span>
+            <span>2024.10.24</span>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-title-group">
+                <h1 class="hero-sans">THE ECONOMIC<br>WORLD MODEL</h1>
+                <div class="hero-script display-serif">Simulation, at last.</div>
+                <div class="hero-tagline">
+                    When the cost of simulation approaches zero,<br>
+                    the cost of not simulating becomes indefensible.
+                </div>
+            </div>
+            <div class="manifesto-block">
+                Simulation is a prerequisite, not an improvement. Relying on historical data alone traps policy in the associative layer. To govern complex systems, to design charter cities, or to stress-test global financial infrastructure, we must model causality. Loka Labs builds the substrate for rigorous economic foresight.
+            </div>
+        </section>
+
+        <!-- QUOTE -->
+        <section class="quote-section">
+            <div class="quote-inner">
+                <div class="quote-text">
+                    "The three rungs of the Ladder of Causation:
+                    <strong>Association, Intervention, Counterfactual.</strong>"
+                </div>
+                <div class="quote-cite">— Judea Pearl, The Book of Why</div>
+            </div>
+        </section>
+
+        <!-- GAP -->
+        <section class="prose-section">
+            <div class="prose-block">
+                <div class="prose-kicker"><span class="rule"></span> Structural Gap</div>
+                <h2 class="prose-heading">Navigating a living system<br>with a dead map.</h2>
+                <div class="prose-body">
+                    <p>Policies are interventions. Crises are counterfactual failures. Yet the tools we use to make decisions operate on mere statistical association.</p>
+                    <p>Legacy models treat humanity as a predictable mass. But economic systems are no longer stationary. AI is rewriting reality faster than any historical model can follow.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATALYST -->
+        <section class="prose-section right">
+            <div class="prose-block">
+                <div class="prose-kicker">Catalyst <span class="rule"></span></div>
+                <h2 class="prose-heading">History has failed<br>as a predictive tool.</h2>
+                <div class="prose-stats">
+                    <div>
+                        <div class="stat-title">Cost Collapse</div>
+                        <div class="stat-desc">Generative agent simulation cost dropped 280× in two years. Two curves are crossing: simulation cost falls exponentially, real-world trial cost rises.</div>
+                    </div>
+                    <div>
+                        <div class="stat-title">Novel Worlds</div>
+                        <div class="stat-desc">Charter cities and AI jurisdictions are being built from zero. Using past data to predict these environments isn't just inaccurate; it's reckless.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LADDER -->
+        <section class="ladder-section">
+            <div class="ladder-intro">
+                Architected upon Judea Pearl's Hierarchy of Causality. We discard correlative guessing for structural understanding.
+            </div>
+            <div class="ladder-grid">
+                <div class="ladder-item">
+                    <div class="ladder-num">01</div>
+                    <div class="ladder-body">
+                        <div class="ladder-script display-serif">Association</div>
+                        <div class="ladder-content">
+                            <div class="ladder-title">Seeing / Observing</div>
+                            <div class="ladder-desc">The domain of standard statistical machine learning. Identifying patterns within existing data sets. "What is? How are variables related?" Insufficient for structural policy design.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ladder-item right">
+                    <div class="ladder-num">02</div>
+                    <div class="ladder-body">
+                        <div class="ladder-script display-serif">Intervention</div>
+                        <div class="ladder-content">
+                            <div class="ladder-title">Doing / Intervening</div>
+                            <div class="ladder-desc">The simulation layer. Predicting the outcome of deliberate actions before they are taken in reality. "What if I execute policy X? How does system Y react?"</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ladder-item">
+                    <div class="ladder-num">03</div>
+                    <div class="ladder-body">
+                        <div class="ladder-script display-serif">Counterfactual</div>
+                        <div class="ladder-content">
+                            <div class="ladder-title">Imagining / Retrospection</div>
+                            <div class="ladder-desc">The formal verification of alternate realities. "Why did this occur? What if the institution had acted differently?" The pinnacle of economic intelligence.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INFRASTRUCTURE -->
+        <section class="infrastructure-section">
+            <div class="infra-header">
+                <div class="infra-kicker">Infrastructure // Three Layers</div>
+                <h2 class="infra-heading">Others stop at Layer 1.<br>Loka Labs has all three.</h2>
+                <div class="display-serif">Infrastructure</div>
+            </div>
+            <div class="feature-block">
+                <div class="feature-label">LAYER 1 — ASSOCIATION</div>
+                <div class="feature-title">Behavioral Simulation</div>
+                <div class="feature-text">Models heterogeneous actors. Outputs state space evolution: how environments change from t to t+1. High-fidelity instantiation of synthetic populations governed by calibrated micro-foundations, creating emergent macro-economic phenomena without forcing top-down equilibrium constraints.</div>
+            </div>
+            <div class="feature-block">
+                <div class="feature-label">LAYER 2 — INTERVENTION</div>
+                <div class="feature-title">Economic Engine</div>
+                <div class="feature-text">The physics of an economy. Forces changes to propagate through the agent network, revealing second-order effects. A proprietary compute engine designed specifically for the nonlinear dynamics of financial flows, resource allocation, and trade networks.</div>
+            </div>
+            <div class="feature-block">
+                <div class="feature-label">LAYER 3 — COUNTERFACTUAL</div>
+                <div class="feature-title">Formal Verification</div>
+                <div class="feature-text">Mathematically proves properties hold. Before implementation, every proposed intervention is exhaustively stress-tested across a massive state space to identify systemic vulnerabilities and unintended consequences. Results are not just probable. They are provable.</div>
+            </div>
+            <div class="feature-quote">
+                "Agents simulate decisions. Economics enforces the rules. Math proves the results."
+            </div>
+        </section>
+
+        <!-- VERIFICATION -->
+        <section class="prose-section right verification-section">
+            <div class="prose-block">
+                <div class="prose-kicker">Public Verification <span class="rule"></span></div>
+                <h2 class="prose-heading">The error is public, timestamped,<br>and verifiable by anyone.</h2>
+                <div class="prose-stats">
+                    <div>
+                        <div class="stat-title">Ground Truth Calibration</div>
+                        <div class="stat-desc">We do not depend on synthetic data. Anchored on public macroeconomic data and decades of controlled behavioral economics research (Kahneman, Thaler).</div>
+                    </div>
+                    <div>
+                        <div class="stat-title">Live Public Verification</div>
+                        <div class="stat-desc">Taylor Swift Eras Tour & 2026 FIFA World Cup. Pre-event economic impact prediction vs real verified data. Not a client testimonial — an accuracy test anyone can check.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <div class="cta-badge">
+                <span class="pill">Built on</span>
+                <span class="credit">Formal Verification (2007 Turing Award)<br>& Distributed AI at Scale (NSDI / OSDI)</span>
+            </div>
+            <h2 class="cta-heading">Simulation is not an improvement.<br>It is a prerequisite.</h2>
+            <div class="cta-sub">Data sovereignty by design. Runs entirely on client infrastructure.</div>
+            <button class="cta-button">Initiate Sovereign Node</button>
+        </section>
+    </main>
+
+    <footer>
+        <div>Loka Labs <span class="serif-accent">research</span> 2024</div>
+        <div>Causal Economic Infrastructure</div>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('glcanvas');
+        const gl = canvas.getContext('webgl');
+        if (!gl) console.error('WebGL not supported');
+
+        const vsSource = `
+            attribute vec4 aVertexPosition;
+            void main() { gl_Position = aVertexPosition; }
+        `;
+
+        const fsSource = `
+            precision highp float;
+            uniform vec2 u_resolution;
+            uniform float u_time;
+
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+
+            float snoise(vec2 v) {
+                const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                                    -0.577350269189626, 0.024390243902439);
+                vec2 i  = floor(v + dot(v, C.yy) );
+                vec2 x0 = v -   i + dot(i, C.xx);
+                vec2 i1;
+                i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                vec4 x12 = x0.xyxy + C.xxzz;
+                x12.xy -= i1;
+                i = mod289(i);
+                vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+                    + i.x + vec3(0.0, i1.x, 1.0 ));
+                vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                m = m*m; m = m*m;
+                vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                vec3 h = abs(x) - 0.5;
+                vec3 ox = floor(x + 0.5);
+                vec3 a0 = x - ox;
+                m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                vec3 g;
+                g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                return 130.0 * dot(m, g);
+            }
+
+            float fbm(vec2 x) {
+                float v = 0.0;
+                float a = 0.5;
+                vec2 shift = vec2(100.0);
+                mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
+                for (int i = 0; i < 5; ++i) {
+                    v += a * snoise(x);
+                    x = rot * x * 2.0 + shift;
+                    a *= 0.5;
+                }
+                return v;
+            }
+
+            void main() {
+                vec2 st = gl_FragCoord.xy/u_resolution.xy;
+                st.x *= u_resolution.x/u_resolution.y;
+
+                vec2 q = vec2(0.);
+                q.x = fbm( st + 0.00 * u_time);
+                q.y = fbm( st + vec2(1.0));
+
+                vec2 r = vec2(0.);
+                r.x = fbm( st + 1.0*q + vec2(1.7,9.2)+ 0.15*u_time );
+                r.y = fbm( st + 1.0*q + vec2(8.3,2.8)+ 0.126*u_time);
+
+                float f = fbm(st+r);
+
+                vec3 color1 = vec3(0.29, 0.35, 0.42);
+                vec3 color2 = vec3(0.54, 0.48, 0.42);
+                vec3 color3 = vec3(0.80, 0.80, 0.79);
+                vec3 color4 = vec3(0.10, 0.11, 0.12);
+
+                vec3 color = mix(color3, color1, clamp((f*f)*4.0,0.0,1.0));
+                color = mix(color, color2, clamp(length(q),0.0,1.0));
+                color = mix(color, color4, clamp(length(r.x),0.0,1.0));
+
+                float highlight = smoothstep(0.4, 0.6, f);
+                color += vec3(0.2) * highlight;
+
+                float dist = distance(st, vec2(st.x, st.x * 0.8 + 0.1));
+                float mask = smoothstep(0.8, 0.2, dist + (fbm(st * 3.0) * 0.3));
+                mask *= smoothstep(0.0, 0.2, st.y) * smoothstep(1.0, 0.8, st.y);
+
+                vec3 baseBg = vec3(0.808, 0.800, 0.788);
+                vec3 finalColor = mix(baseBg, color, mask * 0.85);
+
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+
+        function loadShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error(gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
+
+        function initShaderProgram(gl, vsSource, fsSource) {
+            const vs = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+            const fs = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+            const program = gl.createProgram();
+            gl.attachShader(program, vs);
+            gl.attachShader(program, fs);
+            gl.linkProgram(program);
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error(gl.getProgramInfoLog(program));
+                return null;
+            }
+            return program;
+        }
+
+        const program = initShaderProgram(gl, vsSource, fsSource);
+        const attribLoc = gl.getAttribLocation(program, 'aVertexPosition');
+        const resLoc = gl.getUniformLocation(program, 'u_resolution');
+        const timeLoc = gl.getUniformLocation(program, 'u_time');
+
+        const positions = [-1, 1, 1, 1, -1, -1, 1, -1];
+        const buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+        function resize(canvas) {
+            const w = canvas.clientWidth;
+            const h = canvas.clientHeight;
+            if (canvas.width !== w || canvas.height !== h) {
+                canvas.width = w;
+                canvas.height = h;
+                gl.viewport(0, 0, w, h);
+            }
+        }
+
+        function render(now) {
+            now *= 0.001;
+            resize(gl.canvas);
+            gl.useProgram(program);
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.vertexAttribPointer(attribLoc, 2, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(attribLoc);
+            gl.uniform2f(resLoc, gl.canvas.width, gl.canvas.height);
+            gl.uniform1f(timeLoc, now * 0.2);
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            requestAnimationFrame(render);
+        }
+        requestAnimationFrame(render);
+    </script>
+</body>
+</html>
