@@ -1,6 +1,5 @@
 import ShaderBackground from './components/ShaderBackground';
 import Header from './components/Header';
-import ScrollNav from './components/ScrollNav';
 import Hero from './components/Hero';
 import Quote from './components/Quote';
 import Gap from './components/Gap';
@@ -18,7 +17,6 @@ export default function App() {
     <>
       <ShaderBackground />
       <Header />
-      <ScrollNav />
       <main>
         <Hero />
         <Quote />
