@@ -1,14 +1,675 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Loka Labs — Economic World Model</title>
-    <meta name="description" content="Sovereign economic simulation infrastructure. Formal verification, behavioral simulation, and constraint-solving for policy-makers, charter cities, and financial institutions." />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>loka.Inc — Economic World Model | Loka Labs</title>
+<meta name="description" content="loka.Inc (Loka Labs) builds sovereign economic simulation infrastructure: formal verification, behavioral simulation, and constraint-solving for policy-makers, charter cities, and financial institutions." />
+<meta name="keywords" content="loka.Inc, Loka Inc, Loka Labs, economic world model, economic simulation, formal verification, charter cities" />
+<link rel="canonical" href="https://loka.inc/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://loka.inc/" />
+<meta property="og:title" content="loka.Inc — Economic World Model" />
+<meta property="og:description" content="Sovereign economic simulation infrastructure. Formal verification, behavioral simulation, and constraint-solving for policy-makers, charter cities, and financial institutions." />
+<meta property="og:site_name" content="loka.Inc" />
+<meta property="og:image" content="https://loka.inc/og-image.png" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://loka.inc/" />
+<meta name="twitter:title" content="loka.Inc — Economic World Model" />
+<meta name="twitter:description" content="Sovereign economic simulation infrastructure for policy-makers, charter cities, and financial institutions." />
+<meta name="twitter:image" content="https://loka.inc/og-image.png" />
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "loka.Inc",
+    "alternateName": ["Loka Inc", "Loka Labs"],
+    "url": "https://loka.inc/",
+    "logo": "https://loka.inc/favicon.svg",
+    "description": "Sovereign economic simulation infrastructure: formal verification, behavioral simulation, and constraint-solving for policy-makers, charter cities, and financial institutions."
+  }
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/loka.css">
+</head>
+<body>
+
+<canvas id="glcanvas"></canvas>
+
+<header>
+  <a href="#hero" class="brand">
+    <span class="brand-mark"></span>
+    <span class="brand-name">Loka Labs</span>
+  </a>
+  <div class="header-actions">
+    <button type="button" class="nav-link" id="open-contact">Contact</button>
+    <a href="https://lokaworld.vercel.app/" target="_blank" rel="noreferrer" class="nav-cta">
+      <span>Start simulating</span>
+      <span class="nav-cta-arrow">→</span>
+    </a>
+  </div>
+</header>
+
+<nav class="scroll-nav hidden" aria-label="Section progress" hidden></nav>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-title-group">
+      <h1 class="hero-h1 reveal">
+        <span class="h1-line h1-sans">The Economic</span>
+        <span class="h1-line h1-bold"><span class="h1-accent">World</span> Model.</span>
+      </h1>
+      <p class="hero-tagline reveal reveal-delay-2">
+        Simulating the decisions that move worlds
+      </p>
+      <div class="hero-cta-row reveal reveal-delay-3">
+        <a href="https://lokaworld.vercel.app/" target="_blank" rel="noreferrer" class="hero-cta">
+          <span>Start simulating</span>
+          <span class="arrow">→</span>
+        </a>
+        <span class="hero-cta-meta">Runs on your infrastructure.</span>
+      </div>
+    </div>
+    <div class="manifesto-block reveal reveal-delay-3">
+      Relying on historical data alone traps policy in the associative layer. To govern complex systems, to design charter cities, to stress-test global financial infrastructure — we must model causality, not correlation.
+    </div>
+    <div class="scroll-cue" aria-hidden="true">
+      <span class="scroll-arrow">↓</span>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote-section" id="quote">
+    <div class="quote-inner">
+      <div class="quote-mark reveal">"</div>
+      <div class="quote-text reveal reveal-delay-1">
+        The three rungs of the Ladder of Causation:
+        <strong>Association, Intervention, Counterfactual.</strong>
+      </div>
+      <div class="quote-cite reveal reveal-delay-2">— Judea Pearl, The Book of Why</div>
+    </div>
+  </section>
+
+  <!-- USE CASES -->
+  <section class="usecases-section" id="use-cases">
+    <div class="uc-header">
+      <div class="uc-kicker reveal">Use cases <span class="rule"></span></div>
+      <h2 class="uc-heading reveal reveal-delay-1">Where the engine runs.</h2>
+    </div>
+
+    <div class="uc-grid">
+      <article class="uc-col uc-rise" style="--i:0">
+        <div class="uc-glyph-wrap">
+          <svg class="uc-glyph" viewBox="0 0 240 160" aria-hidden="true">
+            <line x1="20" y1="138" x2="220" y2="138" stroke="currentColor" stroke-width="0.5" opacity="0.3"></line>
+            <g fill="currentColor" opacity="0.3">
+              <circle cx="34" cy="143" r="0.6"></circle>
+              <circle cx="52" cy="144" r="0.6"></circle>
+              <circle cx="70" cy="143" r="0.6"></circle>
+              <circle cx="86" cy="144" r="0.6"></circle>
+              <circle cx="160" cy="144" r="0.6"></circle>
+              <circle cx="176" cy="143" r="0.6"></circle>
+              <circle cx="194" cy="144" r="0.6"></circle>
+              <circle cx="210" cy="143" r="0.6"></circle>
+            </g>
+            <g class="subject" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round">
+              <line x1="120" y1="46" x2="120" y2="60" stroke-width="0.8"></line>
+              <path d="M 120 48 L 128 51 L 120 54 Z" fill="currentColor" stroke="none"></path>
+              <path d="M 108 76 Q 120 58 132 76"></path>
+              <line x1="108" y1="76" x2="132" y2="76"></line>
+              <polygon points="98,84 142,84 120,72"></polygon>
+              <rect x="94" y="84" width="52" height="4" fill="currentColor"></rect>
+              <line x1="100" y1="90" x2="100" y2="122"></line>
+              <line x1="110" y1="90" x2="110" y2="122"></line>
+              <line x1="120" y1="90" x2="120" y2="122"></line>
+              <line x1="130" y1="90" x2="130" y2="122"></line>
+              <line x1="140" y1="90" x2="140" y2="122"></line>
+              <rect x="92" y="122" width="56" height="3" fill="currentColor"></rect>
+              <line x1="89" y1="129" x2="151" y2="129"></line>
+              <line x1="86" y1="133" x2="154" y2="133"></line>
+            </g>
+            <g class="vec v1">
+              <circle cx="36" cy="54" r="11" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+              <circle cx="36" cy="54" r="7.5" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.5"></circle>
+              <text x="36" y="59.5" text-anchor="middle" font-family="Instrument Serif, serif" font-style="italic" font-size="14" font-weight="600" fill="currentColor">$</text>
+            </g>
+            <g class="vec v2">
+              <g fill="currentColor">
+                <circle cx="22" cy="98" r="1.8"></circle>
+                <path d="M 19.6 101 L 19.6 110 L 21.2 110 L 21.2 113 L 22.8 113 L 22.8 110 L 24.4 110 L 24.4 101 Z"></path>
+                <circle cx="32" cy="98" r="1.8"></circle>
+                <path d="M 29.6 101 L 29.6 110 L 31.2 110 L 31.2 113 L 32.8 113 L 32.8 110 L 34.4 110 L 34.4 101 Z"></path>
+                <circle cx="42" cy="98" r="1.8"></circle>
+                <path d="M 39.6 101 L 39.6 110 L 41.2 110 L 41.2 113 L 42.8 113 L 42.8 110 L 44.4 110 L 44.4 101 Z"></path>
+              </g>
+              <path d="M 50 106 L 58 106 M 58 106 L 55 103 M 58 106 L 55 109" stroke="currentColor" stroke-width="0.9" fill="none" opacity="0.7"></path>
+            </g>
+            <g class="vec v3">
+              <rect x="196" y="44" width="16" height="22" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"></rect>
+              <line x1="199" y1="50" x2="209" y2="50" stroke="currentColor" stroke-width="0.6" opacity="0.7"></line>
+              <line x1="199" y1="54" x2="209" y2="54" stroke="currentColor" stroke-width="0.6" opacity="0.7"></line>
+              <line x1="199" y1="58" x2="206" y2="58" stroke="currentColor" stroke-width="0.6" opacity="0.7"></line>
+              <circle cx="210" cy="64" r="2.5" fill="currentColor" opacity="0.85"></circle>
+              <circle cx="210" cy="64" r="3.5" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.5"></circle>
+            </g>
+            <g class="vec v4">
+              <circle cx="206" cy="106" r="11" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+              <ellipse cx="206" cy="106" rx="11" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.6"></ellipse>
+              <line x1="206" y1="95" x2="206" y2="117" stroke="currentColor" stroke-width="0.6" opacity="0.6"></line>
+              <ellipse cx="206" cy="106" rx="5" ry="11" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.45"></ellipse>
+            </g>
+          </svg>
+        </div>
+        <div class="uc-label">Public sector</div>
+        <h3 class="uc-title">Sovereigns &amp; AI jurisdictions</h3>
+        <p class="uc-body">Stress-test policy, migration, infrastructure, capital flows.</p>
+      </article>
+
+      <article class="uc-col uc-rise" style="--i:1">
+        <div class="uc-glyph-wrap">
+          <svg class="uc-glyph" viewBox="0 0 240 160" aria-hidden="true">
+            <g stroke="currentColor" stroke-width="0.3" opacity="0.15">
+              <line x1="30" y1="40" x2="222" y2="40"></line>
+              <line x1="30" y1="70" x2="222" y2="70"></line>
+              <line x1="30" y1="100" x2="222" y2="100"></line>
+            </g>
+            <line x1="30" y1="130" x2="222" y2="130" stroke="currentColor" stroke-width="0.5" opacity="0.45"></line>
+            <line x1="30" y1="24" x2="30" y2="130" stroke="currentColor" stroke-width="0.5" opacity="0.45"></line>
+            <text x="14" y="44" font-family="JetBrains Mono, monospace" font-size="6" fill="currentColor" opacity="0.65">$</text>
+            <text x="14" y="104" font-family="JetBrains Mono, monospace" font-size="6" fill="currentColor" opacity="0.65">$</text>
+            <g class="subject" stroke="currentColor">
+              <line x1="44" y1="68" x2="44" y2="94" stroke-width="0.7"></line>
+              <rect x="40" y="74" width="8" height="14" fill="none" stroke-width="0.9"></rect>
+              <line x1="60" y1="60" x2="60" y2="86" stroke-width="0.7"></line>
+              <rect x="56" y="66" width="8" height="16" fill="none" stroke-width="0.9"></rect>
+              <line x1="76" y1="62" x2="76" y2="84" stroke-width="0.7"></line>
+              <rect x="72" y="70" width="8" height="10" fill="currentColor" stroke-width="0.9"></rect>
+              <line x1="92" y1="52" x2="92" y2="76" stroke-width="0.7"></line>
+              <rect x="88" y="58" width="8" height="14" fill="none" stroke-width="0.9"></rect>
+              <line x1="108" y1="48" x2="108" y2="66" stroke-width="0.7"></line>
+              <rect x="104" y="52" width="8" height="10" fill="none" stroke-width="0.9"></rect>
+              <line x1="124" y1="40" x2="124" y2="118" stroke-width="0.7"></line>
+              <rect class="shock" x="118" y="48" width="12" height="62" fill="currentColor" stroke-width="1"></rect>
+              <rect class="shock-ring" x="114" y="44" width="20" height="70" fill="none" stroke-width="0.6" stroke-dasharray="2 2" opacity="0.5"></rect>
+              <line x1="142" y1="80" x2="142" y2="118" stroke-width="0.7"></line>
+              <rect x="138" y="92" width="8" height="20" fill="currentColor" stroke-width="0.9"></rect>
+              <line x1="158" y1="92" x2="158" y2="114" stroke-width="0.7"></line>
+              <rect x="154" y="98" width="8" height="12" fill="currentColor" stroke-width="0.9"></rect>
+              <line x1="174" y1="86" x2="174" y2="108" stroke-width="0.7"></line>
+              <rect x="170" y="92" width="8" height="12" fill="none" stroke-width="0.9"></rect>
+              <line x1="190" y1="78" x2="190" y2="100" stroke-width="0.7"></line>
+              <rect x="186" y="84" width="8" height="14" fill="none" stroke-width="0.9"></rect>
+              <line x1="206" y1="74" x2="206" y2="98" stroke-width="0.7"></line>
+              <rect x="202" y="80" width="8" height="14" fill="none" stroke-width="0.9"></rect>
+            </g>
+            <g class="event">
+              <line x1="124" y1="22" x2="124" y2="130" stroke="currentColor" stroke-width="0.7" stroke-dasharray="2 3" opacity="0.55"></line>
+              <text x="128" y="22" font-family="JetBrains Mono, monospace" font-size="6.5" fill="currentColor" opacity="0.9">SHOCK t₀</text>
+            </g>
+            <g class="vec v4" opacity="0.55">
+              <text x="30" y="150" font-family="JetBrains Mono, monospace" font-size="6" fill="currentColor">FX</text>
+              <path d="M 44 148 L 60 147 L 76 148 L 92 146 L 108 147 L 122 147 L 138 154 L 154 156 L 174 154 L 190 153 L 210 152" stroke="currentColor" stroke-width="0.7" fill="none"></path>
+            </g>
+          </svg>
+        </div>
+        <div class="uc-label">Capital markets</div>
+        <h3 class="uc-title">Financial institutions</h3>
+        <p class="uc-body">Simulate macro shocks, sovereign risk, second-order market effects.</p>
+      </article>
+
+      <article class="uc-col uc-rise" style="--i:2">
+        <div class="uc-glyph-wrap">
+          <svg class="uc-glyph" viewBox="0 0 240 160" aria-hidden="true">
+            <defs>
+              <clipPath id="uc-globe-clip">
+                <circle cx="120" cy="80" r="58"></circle>
+              </clipPath>
+            </defs>
+            <g class="subject">
+              <circle cx="120" cy="80" r="58" fill="rgba(255,255,255,0.04)" stroke="currentColor" stroke-width="1.3"></circle>
+              <g stroke="currentColor" fill="none" opacity="0.28" stroke-width="0.5">
+                <line x1="62" y1="80" x2="178" y2="80"></line>
+                <line x1="120" y1="22" x2="120" y2="138"></line>
+                <ellipse cx="120" cy="80" rx="58" ry="20"></ellipse>
+                <ellipse cx="120" cy="80" rx="58" ry="40"></ellipse>
+                <ellipse cx="120" cy="80" rx="20" ry="58"></ellipse>
+                <ellipse cx="120" cy="80" rx="40" ry="58"></ellipse>
+              </g>
+            </g>
+            <g class="hotspot">
+              <g transform="translate(96 54)">
+                <circle r="2.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.85">
+                  <animate attributeName="r" from="2.5" to="20" dur="2.6s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.85" to="0" dur="2.6s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2.5" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0">
+                  <animate attributeName="r" from="2.5" to="20" dur="2.6s" begin="0.9s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.7" to="0" dur="2.6s" begin="0.9s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2.5" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0">
+                  <animate attributeName="r" from="2.5" to="20" dur="2.6s" begin="1.8s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.55" to="0" dur="2.6s" begin="1.8s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2.4" fill="currentColor"></circle>
+              </g>
+            </g>
+            <g class="hotspot">
+              <g transform="translate(160 56)">
+                <circle r="2.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.85">
+                  <animate attributeName="r" from="2.5" to="20" dur="2.6s" begin="0.4s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.85" to="0" dur="2.6s" begin="0.4s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2.5" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0">
+                  <animate attributeName="r" from="2.5" to="20" dur="2.6s" begin="1.3s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.7" to="0" dur="2.6s" begin="1.3s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2.5" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0">
+                  <animate attributeName="r" from="2.5" to="20" dur="2.6s" begin="2.2s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.55" to="0" dur="2.6s" begin="2.2s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2.4" fill="currentColor"></circle>
+              </g>
+            </g>
+            <g class="hotspot">
+              <g transform="translate(103 93)">
+                <circle r="2.5" fill="none" stroke="currentColor" stroke-width="1" opacity="0.85">
+                  <animate attributeName="r" from="2.5" to="20" dur="2.6s" begin="0.2s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.85" to="0" dur="2.6s" begin="0.2s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2.5" fill="none" stroke="currentColor" stroke-width="0.7" opacity="0">
+                  <animate attributeName="r" from="2.5" to="20" dur="2.6s" begin="1.1s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.7" to="0" dur="2.6s" begin="1.1s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2.5" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0">
+                  <animate attributeName="r" from="2.5" to="20" dur="2.6s" begin="2.0s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.55" to="0" dur="2.6s" begin="2.0s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2.4" fill="currentColor"></circle>
+              </g>
+            </g>
+            <g class="hotspot">
+              <g transform="translate(120 50)">
+                <circle r="2" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.8">
+                  <animate attributeName="r" from="2" to="16" dur="2.6s" begin="0.6s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.8" to="0" dur="2.6s" begin="0.6s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="2" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0">
+                  <animate attributeName="r" from="2" to="16" dur="2.6s" begin="1.5s" repeatCount="indefinite"></animate>
+                  <animate attributeName="opacity" from="0.6" to="0" dur="2.6s" begin="1.5s" repeatCount="indefinite"></animate>
+                </circle>
+                <circle r="1.9" fill="currentColor"></circle>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <div class="uc-label">Live operations</div>
+        <h3 class="uc-title">Global commercial events</h3>
+        <p class="uc-body">Model city impact, mobility, hotel demand, security load, tax uplift.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- GAP -->
+  <section class="prose-section gap-section" id="gap">
+    <div class="prose-block">
+      <div class="prose-kicker reveal"><span class="rule"></span> The structural gap</div>
+      <h2 class="prose-heading reveal reveal-delay-1">Navigating a living system<br>with a dead map.</h2>
+      <div class="prose-body reveal reveal-delay-2">
+        <p>Policies are interventions. Crises are counterfactual failures. Yet the tools we use to make decisions operate on mere statistical association.</p>
+        <p>Legacy models treat humanity as a predictable mass. But economic systems are no longer stationary. AI is rewriting reality faster than any historical model can follow.</p>
+      </div>
+    </div>
+    <div class="drift-figure reveal reveal-delay-3">
+      <svg viewBox="0 0 520 280" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <linearGradient id="realityGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="currentColor" stop-opacity="0.25"></stop>
+            <stop offset="100%" stop-color="currentColor" stop-opacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <line x1="20" y1="180" x2="500" y2="180" stroke="currentColor" stroke-width="1" stroke-dasharray="4 5" opacity="0.55"></line>
+        <text x="24" y="172" font-family="Instrument Serif, serif" font-style="italic" font-size="18" fill="currentColor" opacity="0.7">Model</text>
+        <path d="M 20 180 Q 80 178 120 175 T 220 168 Q 260 158 290 138 T 360 80 Q 400 55 440 38 T 500 16 L 500 180 L 20 180 Z" fill="currentColor" opacity="0.07"></path>
+        <path d="M 20 180 Q 80 178 120 175 T 220 168 Q 260 158 290 138 T 360 80 Q 400 55 440 38 T 500 16" fill="none" stroke="url(#realityGrad)" stroke-width="2.2" stroke-linecap="round"></path>
+        <text x="495" y="32" text-anchor="end" font-family="Instrument Serif, serif" font-style="italic" font-size="20" fill="currentColor" opacity="0.95">Reality</text>
+        <circle cx="500" cy="16" r="5" fill="currentColor"></circle>
+      </svg>
+      <div class="drift-caption">The map was right once.<br>The territory has moved.</div>
+    </div>
+  </section>
+
+  <!-- CATALYST -->
+  <section class="prose-section right catalyst-section" id="catalyst">
+    <div class="stat-block fly-in" style="--i:0">
+      <div>
+        <div class="stat-row">
+          <div class="stat-figure">280<sup>×</sup></div>
+          <div class="arrow">↓</div>
+        </div>
+        <div class="stat-caption">Generative-agent simulation cost, two-year collapse.</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div>
+        <div class="stat-row">
+          <div class="stat-counter">Real-world trial cost</div>
+          <div class="arrow">↑</div>
+        </div>
+        <div class="stat-caption">The curves have crossed. Simulation is now the cheaper instrument.</div>
+      </div>
+    </div>
+    <div class="prose-block">
+      <div class="prose-kicker reveal">The catalyst <span class="rule"></span></div>
+      <h2 class="prose-heading reveal reveal-delay-1">History has failed<br>as a predictive tool.</h2>
+      <div class="prose-stats reveal reveal-delay-2">
+        <div>
+          <div class="stat-title">Cost Collapse</div>
+          <div class="stat-desc">Generative agent simulation cost dropped 280× in two years. Two curves are crossing: simulation cost falls exponentially, real-world trial cost rises.</div>
+        </div>
+        <div>
+          <div class="stat-title">Novel Worlds</div>
+          <div class="stat-desc">Charter cities and AI jurisdictions are being built from zero. Using past data to predict these environments isn't just inaccurate; it's reckless.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LADDER -->
+  <section class="ladder-section" id="ladder">
+    <div class="ladder-header">
+      <div>
+        <div class="ladder-kicker reveal">Architecture · Pearl hierarchy</div>
+        <h2 class="ladder-title reveal reveal-delay-1">Three rungs.<br>One causal substrate.</h2>
+      </div>
+      <div>
+        <div class="ladder-sub reveal reveal-delay-2">
+          Architected upon Judea Pearl's Hierarchy of Causality. We discard correlative guessing for structural understanding. Select a rung to inspect the operative graph and the question it answers.
+        </div>
+      </div>
+    </div>
+
+    <div class="ladder-stage-wrap">
+      <div class="rung-list">
+        <button class="rung-btn active fly-in" data-rung="1" style="--i:0">
+          <span class="rung-num">01 →</span>
+          <span class="rung-name">Association</span>
+          <span class="rung-verb">Seeing · Observing</span>
+        </button>
+        <button class="rung-btn fly-in" data-rung="2" style="--i:1">
+          <span class="rung-num">02 →</span>
+          <span class="rung-name">Intervention</span>
+          <span class="rung-verb">Doing · Intervening</span>
+        </button>
+        <button class="rung-btn fly-in" data-rung="3" style="--i:2">
+          <span class="rung-num">03 →</span>
+          <span class="rung-name">Counterfactual</span>
+          <span class="rung-verb">Imagining · Retrospection</span>
+        </button>
+      </div>
+
+      <div class="ladder-stage reveal reveal-delay-1">
+        <div class="stage-tab">
+          <span id="stage-tab-label">Rung 01 · Observational</span>
+          <span id="stage-tab-state">P(Y | X)</span>
+        </div>
+        <svg class="dag-svg" viewBox="0 0 600 340" aria-hidden="true">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#111"></path>
+            </marker>
+          </defs>
+          <g id="dag-edges"></g>
+          <g id="dag-nodes"></g>
+          <g id="dag-extras"></g>
+        </svg>
+        <div class="stage-readout">
+          <div class="readout-q" id="readout-q">"How are policy, market, and welfare correlated?"</div>
+          <div>
+            <div class="readout-desc" id="readout-desc">Joint distributions over observed variables. Patterns, not mechanisms.</div>
+            <div class="readout-formula" id="readout-formula">P(Y | X = x)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFRASTRUCTURE -->
+  <section class="infrastructure-section" id="infra">
+    <div class="infra-header">
+      <div class="infra-kicker reveal">Infrastructure · three layers</div>
+      <h2 class="infra-heading reveal reveal-delay-1">Others stop at Layer 1.<br>Loka Labs has all three.</h2>
+      <div class="display-serif reveal reveal-delay-2">A vertically-integrated causal stack.</div>
+    </div>
+
+    <div class="feature-block fly-in" style="--i:0">
+      <div class="layer-canvas-wrap">
+        <span class="layer-tag">L1 · Agents</span>
+        <canvas data-layer="l1"></canvas>
+        <span class="layer-state" data-layer-state="l1">N = 0</span>
+      </div>
+      <div class="feature-label">Layer 1 — Association</div>
+      <div class="feature-title">Behavioral Simulation</div>
+      <div class="feature-text">Models heterogeneous actors. Outputs state-space evolution: how environments change from t to t+1. High-fidelity instantiation of synthetic populations governed by calibrated micro-foundations, creating emergent macro-economic phenomena without forcing top-down equilibrium constraints.</div>
+    </div>
+
+    <div class="feature-block fly-in" style="--i:1">
+      <div class="layer-canvas-wrap">
+        <span class="layer-tag">L2 · Network</span>
+        <canvas data-layer="l2"></canvas>
+        <span class="layer-state" data-layer-state="l2">Δ = 0</span>
+      </div>
+      <div class="feature-label">Layer 2 — Intervention</div>
+      <div class="feature-title">Economic Engine</div>
+      <div class="feature-text">The physics of an economy. Forces changes to propagate through the agent network, revealing second-order effects. A proprietary compute engine designed specifically for the nonlinear dynamics of financial flows, resource allocation, and trade networks.</div>
+    </div>
+
+    <div class="feature-block fly-in" style="--i:2">
+      <div class="layer-canvas-wrap">
+        <span class="layer-tag">L3 · State-space</span>
+        <canvas data-layer="l3"></canvas>
+        <span class="layer-state" data-layer-state="l3">paths = 0</span>
+      </div>
+      <div class="feature-label">Layer 3 — Counterfactual</div>
+      <div class="feature-title">Formal Verification</div>
+      <div class="feature-text">Mathematically proves properties hold. Before implementation, every proposed intervention is exhaustively stress-tested across a massive state space to identify systemic vulnerabilities and unintended consequences. Results are not just probable. They are provable.</div>
+    </div>
+
+    <div class="feature-quote reveal reveal-delay-3">
+      <span class="qmark">Operating principle</span>
+      <span class="qline"></span>
+      <span><em>Agents simulate decisions. Economics enforces the rules. Math proves the results.</em></span>
+    </div>
+  </section>
+
+  <!-- VERIFICATION -->
+  <section class="verification-section" id="verify">
+    <div class="chart-wrap fly-in" style="--i:0">
+      <div class="chart-title">Prediction · Verified Outcome</div>
+      <canvas id="verify-canvas" width="640" height="360"></canvas>
+      <div class="chart-legend">
+        <span class="dashed">Pre-event prediction</span>
+        <span>Verified outcome</span>
+      </div>
+    </div>
+    <div class="prose-block">
+      <div class="prose-kicker reveal">Public verification <span class="rule"></span></div>
+      <h2 class="prose-heading reveal reveal-delay-1">The error is public,<br>timestamped, and verifiable<br>by anyone.</h2>
+      <div class="prose-stats reveal reveal-delay-2">
+        <div>
+          <div class="stat-title">Ground Truth Calibration</div>
+          <div class="stat-desc">We do not depend on synthetic data. Anchored on public macroeconomic data and decades of controlled behavioral economics research (Kahneman, Thaler).</div>
+        </div>
+        <div>
+          <div class="stat-title">Live Public Verification</div>
+          <div class="stat-desc">Major live events &amp; 2026 World Cup. Pre-event economic-impact prediction vs real verified data. Not a client testimonial — an accuracy test anyone can check.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team-section" id="team">
+    <div class="team-frame">
+      <div class="team-header">
+        <div class="team-kicker reveal">Team <span class="rule"></span></div>
+        <h2 class="team-heading reveal reveal-delay-1">The people behind Loka Labs.</h2>
+      </div>
+
+      <div class="team-grid">
+        <div class="team-col">
+          <article class="team-card team-fly reveal" style="--i:0">
+            <div class="team-avatar"><img src="/team/lora.png" alt="Lora Jiang" loading="lazy"></div>
+            <div class="team-body">
+              <h3 class="team-name">Lora Jiang</h3>
+              <div class="team-role">Co-founder, CEO</div>
+              <div class="team-cred">Parsons. Harvard.</div>
+              <p class="team-bio">Led Taiko's $1.2B Series A (Lightspeed Faction lead) and $2.2B TGE — 4 months from close to public market. As Head of Strategic Finance. Backed by Sequoia China, Tencent, BAI.</p>
+            </div>
+          </article>
+          <article class="team-card team-fly reveal" style="--i:1">
+            <div class="team-avatar"><img src="/team/akasha.png" alt="Akasha Zhu" loading="lazy"></div>
+            <div class="team-body">
+              <h3 class="team-name">Akasha Zhu</h3>
+              <div class="team-role">Co-founder, President</div>
+              <div class="team-cred">Tsinghua at 16. MIT.</div>
+              <p class="team-bio">12 patents. Founder of Hetu (distributed systems), Vinci (consumer hardware), and Tongxue (social network). Identified the Economic World Model category before anyone else was looking.</p>
+            </div>
+          </article>
+          <article class="team-card team-fly reveal" style="--i:2">
+            <div class="team-avatar"><img src="/team/jialin.png" alt="Jialin Li" loading="lazy"></div>
+            <div class="team-body">
+              <h3 class="team-name">Jialin Li</h3>
+              <div class="team-role">Co-founder, CTO</div>
+              <div class="team-cred">NUS, Assistant Professor.</div>
+              <p class="team-bio">Distributed systems researcher. OSDI / NSDI Best Paper. Co-founded Hetu with Akasha — they have shipped together before. Builds the systems that make the impossible run at scale.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="team-col team-col--advisors">
+          <article class="team-card team-card--advisor team-fly reveal" style="--i:3">
+            <div class="team-body">
+              <h3 class="team-name">Joseph Sifakis</h3>
+              <div class="team-role">Founding Scientist</div>
+              <div class="team-cred">Turing Award, 2007. Founder of model checking.</div>
+              <p class="team-bio">He pioneered proving complex systems correct before they run — chips, aircraft, mission-critical infrastructure. His first commercial engagement applying formal verification to economic systems.</p>
+            </div>
+          </article>
+          <article class="team-card team-card--advisor team-fly reveal" style="--i:4">
+            <div class="team-body">
+              <h3 class="team-name">Felix Oberholzer-Gee</h3>
+              <div class="team-role">Founding Advisor</div>
+              <div class="team-cred">Harvard Business School, Professor.</div>
+              <p class="team-bio">Author of Better, Simpler Strategy — the strategy textbook used at HBS. Studies how value is created in complex systems.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <div class="cta-badge reveal">
+      <span class="pill">Built on</span>
+      <span class="credit">Formal Verification (2007 Turing Award)<br>&amp; Distributed AI at Scale (NSDI / OSDI)</span>
+    </div>
+    <h2 class="cta-heading reveal reveal-delay-1">Simulation is not an improvement.<br>It is a prerequisite.</h2>
+    <div class="cta-sub reveal reveal-delay-2">Data sovereignty by design. Runs entirely on client infrastructure.</div>
+    <a href="https://lokaworld.vercel.app/" target="_blank" rel="noreferrer" class="cta-button reveal reveal-delay-3">
+      <span>Start simulating</span>
+      <span class="arrow">→</span>
+    </a>
+    <div class="cta-meta reveal reveal-delay-4">
+      <span>Air-gapped deployment</span>
+      <span>On-prem GPU cluster</span>
+      <span>SOC 2 · ISO 27001</span>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-name">
+        <span class="brand-mark"></span>
+        <span>Loka Labs</span>
+      </div>
+      <p class="footer-tagline">Sovereign economic simulation infrastructure.</p>
+    </div>
+
+    <nav class="footer-col">
+      <div class="footer-col-heading">Contact</div>
+      <a href="mailto:hello@loka.inc">hello@loka.inc</a>
+      <button type="button" class="footer-link-btn" id="open-contact-2">Get in touch →</button>
+    </nav>
+
+    <nav class="footer-col">
+      <div class="footer-col-heading">Platform</div>
+      <a href="https://lokaworld.vercel.app/" target="_blank" rel="noreferrer">Start simulating ↗</a>
+    </nav>
+
+    <nav class="footer-col">
+      <div class="footer-col-heading">Built on</div>
+      <span class="footer-muted">Pearl's Hierarchy of Causation</span>
+      <span class="footer-muted">Formal verification · 2007 Turing Award</span>
+      <span class="footer-muted">Distributed AI at scale · NSDI / OSDI</span>
+    </nav>
+  </div>
+
+  <div class="footer-bottom">
+    <div>Loka Labs <span class="serif-accent">research</span> · © 2026</div>
+    <div>Causal economic infrastructure. All rights reserved.</div>
+  </div>
+</footer>
+
+<!-- CONTACT MODAL -->
+<div class="contact-overlay" id="contact-overlay" hidden role="dialog" aria-modal="true">
+  <div class="contact-modal" id="contact-modal">
+    <button class="contact-close" id="contact-close" aria-label="Close">×</button>
+    <div class="contact-eyebrow">— Contact</div>
+    <h2 class="contact-title">Let's talk.</h2>
+    <p class="contact-sub">For partnerships, research collaborations, or simulation pilots — leave your details and we'll reach out.</p>
+
+    <form class="contact-form" id="contact-form">
+      <label class="contact-field">
+        <span class="contact-label">Name</span>
+        <input type="text" name="name" placeholder="Your name" autocomplete="name">
+      </label>
+      <label class="contact-field">
+        <span class="contact-label">Email <em>*</em></span>
+        <input type="email" name="email" required placeholder="you@domain.com" autocomplete="email">
+      </label>
+      <label class="contact-field">
+        <span class="contact-label">Message <em>*</em></span>
+        <textarea name="message" required rows="4" placeholder="What would you like to explore with us?"></textarea>
+      </label>
+      <div class="contact-error" id="contact-error" hidden></div>
+      <button type="submit" class="contact-submit" id="contact-submit">
+        <span id="contact-submit-label">Send message</span>
+        <span class="arrow">→</span>
+      </button>
+      <div class="contact-meta">Or email us directly at <a href="mailto:hello@loka.inc">hello@loka.inc</a></div>
+    </form>
+
+    <div class="contact-success" id="contact-success" hidden>
+      <div class="contact-success-mark">✓</div>
+      <div>
+        <div class="contact-success-title">Message received.</div>
+        <div class="contact-success-body">We'll be in touch at <em id="contact-success-email"></em> shortly.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/loka.js"></script>
+</body>
 </html>
