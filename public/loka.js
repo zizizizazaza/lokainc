@@ -31,7 +31,7 @@
   const errBox = document.getElementById('contact-error');
   const submit = document.getElementById('contact-submit');
   const submitLabel = document.getElementById('contact-submit-label');
-  const WEB3FORMS_ACCESS_KEY = '47497289-369a-4592-894b-37ea72302465';
+  const WEB3FORMS_ACCESS_KEY = '3181ff54-df0a-4280-9f85-33c11d4b064e';
 
   function open() {
     overlay.hidden = false;
