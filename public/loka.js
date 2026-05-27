@@ -20,6 +20,18 @@
 
 /* ---------- 2. Scroll-nav — removed ---------- */
 
+/* ---------- 2b. Header backdrop on scroll ---------- */
+(function headerScroll() {
+  const header = document.querySelector('header');
+  if (!header) return;
+  const onScroll = () => {
+    if (window.scrollY > 80) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
 /* ---------- 3. Contact modal ---------- */
 (function contactModal() {
   const overlay = document.getElementById('contact-overlay');
