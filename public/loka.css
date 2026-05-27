@@ -81,6 +81,13 @@ header {
   transition: background 0.3s ease, color 0.3s ease, gap 0.3s ease;
 }
 .nav-cta .nav-cta-arrow { font-size: 0.75rem; transition: transform 0.35s cubic-bezier(.2,.7,.2,1); }
+.nav-cta .nav-cta-beta {
+  display: inline-flex; align-items: center;
+  padding: 0.15rem 0.45rem; border-radius: 999px;
+  font-family: var(--font-mono); font-size: 0.6rem;
+  font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  border: 1px solid currentColor; opacity: 0.75; line-height: 1;
+}
 .nav-cta:hover { gap: 0.9rem; }
 .nav-cta:hover .nav-cta-arrow { transform: translate(2px, -2px); }
 
@@ -141,9 +148,9 @@ h1, h2, h3, .display-sans { font-family: var(--font-sans); font-weight: 700; lin
 }
 .hero-h1 .h1-accent { color: #c8c8c8; font-weight: 800; }
 .hero-tagline {
-  font-family: var(--font-sans); font-weight: 400; font-size: 1.35rem;
-  color: var(--text-light); opacity: 0.92; max-width: 36rem;
-  line-height: 1.55; margin-top: 2.5rem;
+  font-family: var(--font-sans); font-weight: 400; font-size: 1.05rem;
+  color: var(--text-light); opacity: 0.9; max-width: 32rem;
+  line-height: 1.55; margin-top: 2.25rem;
   text-shadow: 0 2px 18px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.35);
 }
 .hero-cta-row { margin-top: 2.5rem; display: flex; align-items: center; gap: 1.5rem; color: var(--text-light); }
@@ -458,6 +465,10 @@ footer {
 .contact-label em { font-style: normal; color: var(--accent); }
 .contact-field input,
 .contact-field textarea { font-family: var(--font-body); font-size: 0.95rem; color: var(--text-dark); background: transparent; border: none; border-bottom: 1px solid rgba(0,0,0,0.18); padding: 0.55rem 0; transition: border-color 0.25s ease; resize: vertical; width: 100%; }
+.contact-select-wrap { position: relative; display: block; }
+.contact-select { appearance: none; -webkit-appearance: none; -moz-appearance: none; width: 100%; font-family: var(--font-body); font-size: 0.95rem; color: var(--text-dark); background: transparent; border: none; border-bottom: 1px solid rgba(0,0,0,0.18); padding: 0.55rem 1.25rem 0.55rem 0; transition: border-color 0.25s ease; cursor: pointer; }
+.contact-select:focus { outline: none; border-bottom-color: var(--text-dark); }
+.contact-select-caret { position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-size: 0.6rem; opacity: 0.55; pointer-events: none; }
 .contact-field input::placeholder,
 .contact-field textarea::placeholder { color: rgba(0,0,0,0.32); }
 .contact-field input:focus,

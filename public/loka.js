@@ -44,12 +44,16 @@
     success.hidden = true;
     errBox.hidden = true;
     form.reset();
-    submitLabel.textContent = 'Send message';
+    submitLabel.textContent = 'Submit inquiry';
     submit.disabled = false;
   }
   openBtn.addEventListener('click', open);
   const openBtn2 = document.getElementById('open-contact-2');
   if (openBtn2) openBtn2.addEventListener('click', open);
+  ['open-contact-hero', 'open-contact-cta'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', open);
+  });
   closeBtn.addEventListener('click', close);
   overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) close(); });
@@ -60,12 +64,15 @@
     submitLabel.textContent = 'Sending…';
     errBox.hidden = true;
     const fd = new FormData(form);
+    const topic = fd.get('topic') || 'General inquiry';
+    const org = fd.get('organization') || '';
+    const messageBody = `Topic: ${topic}\nOrganization: ${org}\n\n${fd.get('message') || ''}`;
     const payload = {
       access_key: WEB3FORMS_ACCESS_KEY,
-      subject: `New contact from ${fd.get('name') || fd.get('email')} — loka.inc`,
+      subject: `[${topic}] ${fd.get('name') || fd.get('email')} — loka.inc`,
       from_name: fd.get('name') || 'loka.inc visitor',
       email: fd.get('email'),
-      message: fd.get('message'),
+      message: messageBody,
     };
     try {
       const res = await fetch('https://api.web3forms.com/submit', {
@@ -82,13 +89,13 @@
         errBox.textContent = data.message || 'Something went wrong.';
         errBox.hidden = false;
         submit.disabled = false;
-        submitLabel.textContent = 'Send message';
+        submitLabel.textContent = 'Submit inquiry';
       }
     } catch (err) {
       errBox.textContent = err.message || 'Network error.';
       errBox.hidden = false;
       submit.disabled = false;
-      submitLabel.textContent = 'Send message';
+      submitLabel.textContent = 'Submit inquiry';
     }
   });
 })();
